@@ -8,30 +8,40 @@ const feeds = [
 ];
 
 const obtenerNoticias = async () => {
-  const noticias = [];
+  try {
+    const noticias = [];
 
-  for (const feedUrl of feeds) {
-    try {
-      const feed = await parser.parseURL(feedUrl);
+    for (const feedUrl of feeds) {
+      try {
+        const feed = await parser.parseURL(feedUrl);
 
-      feed.items.slice(0, 8).forEach((item) => {
-        noticias.push({
-          titulo: item.title,
-          enlace: item.link,
-          fecha: item.pubDate,
-          fuente: feed.title,
-          descripcion:
-            item.contentSnippet ||
-            item.content ||
-            "Noticia de actualidad futbolística."
+        feed.items.slice(0, 8).forEach((item) => {
+          noticias.push({
+            titulo: item.title || "Sin título",
+            enlace: item.link || "#",
+            fecha: item.pubDate || new Date(),
+            fuente: feed.title || "Fuente desconocida",
+            descripcion:
+              item.contentSnippet ||
+              item.content ||
+              "Noticia de actualidad futbolística."
+          });
         });
-      });
-    } catch (error) {
-      console.error("Error leyendo feed:", feedUrl, error.message);
+      } catch (error) {
+        console.error(`Error leyendo feed ${feedUrl}:`, error.message);
+      }
     }
-  }
 
-  return noticias.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    return noticias.sort(
+      (a, b) => new Date(b.fecha) - new Date(a.fecha)
+    );
+
+  } catch (error) {
+    console.error("Error obteniendo noticias:", error.message);
+    return [];
+  }
 };
 
-module.exports = { obtenerNoticias };
+module.exports = {
+  obtenerNoticias
+};
