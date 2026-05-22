@@ -1,5 +1,5 @@
 const footballService = require("../services/footballService");
-const partidoModel = require("../models/PartidoModel")
+const partidoModel = require("../models/PartidoModel");
 
 const obtenerLigas = async (req, res) => {
   try {
