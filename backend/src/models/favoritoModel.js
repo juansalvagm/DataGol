@@ -1,8 +1,13 @@
 const db = require("../config/db");
 
-const getFavoritos = async () => {
+const getFavoritos = async (usuario_id) => {
   const [rows] = await db.query(
-    "SELECT * FROM favoritos ORDER BY id DESC"
+    `
+    SELECT * FROM favoritos
+    WHERE usuario_id = ?
+    ORDER BY id DESC
+    `,
+    [usuario_id]
   );
 
   return rows;
