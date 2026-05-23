@@ -15,6 +15,7 @@ import Favoritos from "./pages/Favoritos";
 import Buscar from "./pages/Buscar";
 import Login from "./pages/Login";
 import Noticias from "./pages/Noticias";
+import Perfil from "./pages/Perfil";
 
 function App() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -67,6 +68,7 @@ function App() {
             <Route path="/buscar/:texto" element={<Buscar />} />
             <Route path="/login" element={<Login />} />
             <Route path="/noticias" element={<Noticias />} />
+            <Route path="/perfil" element={<Perfil />} />
           </>
         )}
       </Routes>
