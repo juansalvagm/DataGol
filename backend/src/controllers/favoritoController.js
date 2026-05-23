@@ -2,9 +2,20 @@ const favoritoModel = require("../models/favoritoModel");
 
 const obtenerFavoritos = async (req, res) => {
   try {
-    const favoritos = await favoritoModel.getFavoritos();
+    const { usuario_id } = req.query;
+
+    if (!usuario_id) {
+      return res.status(400).json({
+        error: "Falta usuario_id"
+      });
+    }
+
+    const favoritos = await favoritoModel.getFavoritos(
+      usuario_id
+    );
 
     res.json(favoritos);
+
   } catch (error) {
     console.error("Error al obtener favoritos:", error);
 
@@ -35,6 +46,7 @@ const crearFavorito = async (req, res) => {
       mensaje: "Favorito creado correctamente",
       id: resultado.insertId
     });
+
   } catch (error) {
     console.error("Error al crear favorito:", error);
 
@@ -60,6 +72,7 @@ const actualizarFavorito = async (req, res) => {
     res.json({
       mensaje: "Favorito actualizado correctamente"
     });
+
   } catch (error) {
     console.error("Error al actualizar favorito:", error);
 
@@ -78,6 +91,7 @@ const eliminarFavorito = async (req, res) => {
     res.json({
       mensaje: "Favorito eliminado correctamente"
     });
+
   } catch (error) {
     console.error("Error al eliminar favorito:", error);
 
