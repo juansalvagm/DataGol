@@ -89,6 +89,10 @@ function Navbar() {
             Favoritos
           </Link>
 
+          <Link to="/perfil" className="nav-pill">
+            Mi perfil
+          </Link>
+
           {usuario?.rol === "admin" && (
             <Link to="/usuarios" className="nav-pill">
               Usuarios
