@@ -29,7 +29,9 @@ const obtenerLinkEntradas = (nombreEquipo) => {
 
 function Equipos() {
   const { liga } = useParams();
+
   const [equipos, setEquipos] = useState([]);
+  const [favoritos, setFavoritos] = useState([]);
 
   useEffect(() => {
     const cargarEquipos = async () => {
@@ -41,7 +43,28 @@ function Equipos() {
       }
     };
 
+    const cargarFavoritos = async () => {
+      try {
+        const usuario = JSON.parse(
+          localStorage.getItem("usuario")
+        );
+
+        if (!usuario || !usuario.id) return;
+
+        const response = await api.get(
+          `/favoritos?usuario_id=${usuario.id}`
+        );
+
+        setFavoritos(response.data || []);
+
+      } catch (error) {
+        console.error("Error cargando favoritos:", error);
+      }
+    };
+
     cargarEquipos();
+    cargarFavoritos();
+
   }, [liga]);
 
   const agregarFavorito = async (equipo, e) => {
@@ -63,6 +86,24 @@ function Equipos() {
       return;
     }
 
+    const yaExiste = favoritos.some(
+      (fav) =>
+        fav.referencia_id === equipo.id
+    );
+
+    if (yaExiste) {
+      Swal.fire({
+        icon: "info",
+        title: "Ya añadido",
+        text: "Este equipo ya está en favoritos ⭐",
+        confirmButtonColor: "#19e35f",
+        background: "#07110b",
+        color: "#ffffff"
+      });
+
+      return;
+    }
+
     try {
       await api.post("/favoritos", {
         usuario_id: usuario.id,
@@ -70,6 +111,13 @@ function Equipos() {
         referencia_id: equipo.id,
         nombre: equipo.name
       });
+
+      setFavoritos([
+        ...favoritos,
+        {
+          referencia_id: equipo.id
+        }
+      ]);
 
       Swal.fire({
         icon: "success",
@@ -79,11 +127,14 @@ function Equipos() {
         background: "#07110b",
         color: "#ffffff"
       });
+
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: error.response?.data?.error || "No se pudo guardar el favorito",
+        text:
+          error.response?.data?.error ||
+          "No se pudo guardar el favorito",
         confirmButtonColor: "#ef4444",
         background: "#07110b",
         color: "#ffffff"
@@ -115,65 +166,84 @@ function Equipos() {
         </div>
 
         {equipos.length === 0 ? (
-          <div className="empty-state">No hay equipos.</div>
+          <div className="empty-state">
+            No hay equipos.
+          </div>
         ) : (
           <div className="grid list-grid">
-            {equipos.map((equipo) => (
-              <Link
-                to={`/jugadores/${equipo.id}/${liga}`}
-                className="card card-link"
-                key={equipo.id}
-              >
-                <div className="team-row">
-                  <img
-                    src={equipo.crest}
-                    alt={equipo.name}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      objectFit: "contain",
-                      backgroundColor: "white",
-                      borderRadius: "10px",
-                      padding: "5px"
-                    }}
-                  />
+            {equipos.map((equipo) => {
+              const esFavorito = favoritos.some(
+                (fav) =>
+                  fav.referencia_id === equipo.id
+              );
 
-                  <div className="team-info">
-                    <h3>{equipo.name}</h3>
-                    <p>{equipo.area?.name || "Sin país"}</p>
-                  </div>
-                </div>
-
-                <div className="card-meta">
-                  Estadio: {equipo.venue || "No disponible"}
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                    flexWrap: "wrap",
-                    marginTop: "14px"
-                  }}
+              return (
+                <Link
+                  to={`/jugadores/${equipo.id}/${liga}`}
+                  className="card card-link"
+                  key={equipo.id}
                 >
-                  <button
-                    onClick={(e) => agregarFavorito(equipo, e)}
-                    className="btn btn-primary"
-                    type="button"
-                  >
-                    ⭐ Favorito
-                  </button>
+                  <div className="team-row">
+                    <img
+                      src={equipo.crest}
+                      alt={equipo.name}
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "contain",
+                        backgroundColor: "white",
+                        borderRadius: "10px",
+                        padding: "5px"
+                      }}
+                    />
 
-                  <button
-                    onClick={(e) => abrirEntradas(equipo, e)}
-                    className="btn btn-primary"
-                    type="button"
+                    <div className="team-info">
+                      <h3>{equipo.name}</h3>
+                      <p>{equipo.area?.name || "Sin país"}</p>
+                    </div>
+                  </div>
+
+                  <div className="card-meta">
+                    Estadio: {equipo.venue || "No disponible"}
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      flexWrap: "wrap",
+                      marginTop: "14px"
+                    }}
                   >
-                    🎟 Entradas
-                  </button>
-                </div>
-              </Link>
-            ))}
+                    <button
+                      onClick={(e) =>
+                        agregarFavorito(equipo, e)
+                      }
+                      className={`btn ${
+                        esFavorito
+                          ? "btn-success"
+                          : "btn-primary"
+                      }`}
+                      type="button"
+                    >
+                      {esFavorito
+                        ? "✅ Ya en favoritos"
+                        : "⭐ Favorito"}
+                    </button>
+
+                    <button
+                      onClick={(e) =>
+                        abrirEntradas(equipo, e)
+                      }
+                      className="btn btn-primary"
+                      type="button"
+                    >
+                      🎟 Entradas
+                    </button>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

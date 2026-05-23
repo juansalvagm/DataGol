@@ -13,7 +13,18 @@ function Favoritos() {
         localStorage.getItem("usuario")
       );
 
-      alert(JSON.stringify(usuario));
+      if (!usuario || !usuario.id) {
+        Swal.fire({
+          icon: "error",
+          title: "Sesión inválida",
+          text: "Vuelve a iniciar sesión.",
+          confirmButtonColor: "#ef4444",
+          background: "#07110b",
+          color: "#ffffff"
+        });
+
+        return;
+      }
 
       const response = await api.get(
         `/favoritos?usuario_id=${usuario.id}`
