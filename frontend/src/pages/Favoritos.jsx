@@ -13,6 +13,8 @@ function Favoritos() {
         localStorage.getItem("usuario")
       );
 
+      console.log(usuario);
+
       const response = await api.get(
         `/favoritos?usuario_id=${usuario.id}`
       );
