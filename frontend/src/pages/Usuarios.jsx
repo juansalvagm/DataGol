@@ -4,34 +4,6 @@ import Swal from "sweetalert2";
 
 function Usuarios() {
 
-  // USUARIO LOGUEADO
-  const usuario = JSON.parse(
-    localStorage.getItem("usuario")
-  );
-
-  // BLOQUEAR SI NO ES ADMIN
-  if (!usuario || usuario.rol !== "admin") {
-
-    return (
-      <div className="app-shell">
-        <div className="container">
-
-          <div className="card card-content">
-
-            <h1>Acceso denegado 🚫</h1>
-
-            <p>
-              No tienes permisos para acceder
-              a esta página.
-            </p>
-
-          </div>
-
-        </div>
-      </div>
-    );
-  }
-
   const [editandoId, setEditandoId] =
     useState(null);
 
@@ -58,7 +30,7 @@ function Usuarios() {
 
     try {
 
-      // FORZAR ROL USUARIO
+      // FORZAR SIEMPRE USUARIO
       const datosUsuario = {
         ...formulario,
         rol: "usuario"

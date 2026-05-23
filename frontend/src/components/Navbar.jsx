@@ -94,8 +94,11 @@ function Navbar() {
           </Link>
 
           {usuario?.rol === "admin" && (
-            <Link to="/usuarios" className="nav-pill">
-              Usuarios
+            <Link
+              to="/admin/usuarios"
+              className="nav-pill"
+            >
+              Usuarios 👑
             </Link>
           )}
 

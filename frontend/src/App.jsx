@@ -16,6 +16,7 @@ import Buscar from "./pages/Buscar";
 import Login from "./pages/Login";
 import Noticias from "./pages/Noticias";
 import Perfil from "./pages/Perfil";
+import AdminUsuarios from "./pages/AdminUsuarios";
 
 function App() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -69,6 +70,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/noticias" element={<Noticias />} />
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/admin/usuarios" element={<AdminUsuarios />} />
           </>
         )}
       </Routes>
