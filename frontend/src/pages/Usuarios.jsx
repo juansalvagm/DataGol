@@ -23,8 +23,19 @@ function Usuarios() {
     e.preventDefault();
 
     try {
+
+      // FORZAR SIEMPRE ROL USUARIO
+      const datosUsuario = {
+        ...formulario,
+        rol: "usuario"
+      };
+
       if (editandoId) {
-        await api.put(`/usuarios/${editandoId}`, formulario);
+
+        await api.put(
+          `/usuarios/${editandoId}`,
+          datosUsuario
+        );
 
         Swal.fire({
           icon: "success",
@@ -38,7 +49,11 @@ function Usuarios() {
         setEditandoId(null);
 
       } else {
-        await api.post("/usuarios", formulario);
+
+        await api.post(
+          "/usuarios",
+          datosUsuario
+        );
 
         Swal.fire({
           icon: "success",
@@ -58,7 +73,11 @@ function Usuarios() {
       });
 
     } catch (error) {
-      console.error("Error al guardar usuario:", error);
+
+      console.error(
+        "Error al guardar usuario:",
+        error
+      );
 
       Swal.fire({
         icon: "error",
@@ -84,7 +103,9 @@ function Usuarios() {
 
         <div className="page-header">
           <h1>Crear usuario</h1>
-          <p>Registra una nueva cuenta en DataGol</p>
+          <p>
+            Registra una nueva cuenta en DataGol
+          </p>
         </div>
 
         <form
@@ -109,10 +130,12 @@ function Usuarios() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gridTemplateColumns:
+                "repeat(auto-fit, minmax(220px, 1fr))",
               gap: "16px"
             }}
           >
+
             <input
               type="text"
               name="nombre"
@@ -143,15 +166,6 @@ function Usuarios() {
               required={!editandoId}
             />
 
-            <select
-              name="rol"
-              value={formulario.rol}
-              onChange={manejarCambio}
-              className="input"
-            >
-              <option value="usuario">Usuario</option>
-              <option value="admin">Admin</option>
-            </select>
           </div>
 
           <div
@@ -162,6 +176,7 @@ function Usuarios() {
               marginTop: "24px"
             }}
           >
+
             <button
               type="submit"
               className="btn btn-primary"
@@ -174,15 +189,20 @@ function Usuarios() {
               className="btn"
               onClick={volverLogin}
               style={{
-                background: "rgba(255,255,255,0.08)",
+                background:
+                  "rgba(255,255,255,0.08)",
                 color: "white",
-                border: "1px solid rgba(255,255,255,0.16)"
+                border:
+                  "1px solid rgba(255,255,255,0.16)"
               }}
             >
               ← Volver al login
             </button>
+
           </div>
+
         </form>
+
       </div>
     </div>
   );

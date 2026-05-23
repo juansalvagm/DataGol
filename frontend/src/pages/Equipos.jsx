@@ -215,21 +215,28 @@ function Equipos() {
                       marginTop: "14px"
                     }}
                   >
-                    <button
-                      onClick={(e) =>
-                        agregarFavorito(equipo, e)
-                      }
-                      className={`btn ${
-                        esFavorito
-                          ? "btn-success"
-                          : "btn-primary"
-                      }`}
-                      type="button"
-                    >
-                      {esFavorito
-                        ? "✅ Ya en favoritos"
-                        : "⭐ Favorito"}
-                    </button>
+                   <button
+  onClick={(e) =>
+    agregarFavorito(equipo, e)
+  }
+  className={`btn ${
+    esFavorito
+      ? "btn-success"
+      : "btn-primary"
+  }`}
+  type="button"
+  disabled={esFavorito}
+  style={{
+    opacity: esFavorito ? 0.7 : 1,
+    cursor: esFavorito
+      ? "not-allowed"
+      : "pointer"
+  }}
+>
+  {esFavorito
+    ? "✅ Ya en favoritos"
+    : "⭐ Favorito"}
+</button>
 
                     <button
                       onClick={(e) =>
