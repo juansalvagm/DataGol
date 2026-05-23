@@ -9,8 +9,16 @@ function Favoritos() {
 
   const cargarFavoritos = async () => {
     try {
-      const response = await api.get("/favoritos");
+      const usuario = JSON.parse(
+        localStorage.getItem("usuario")
+      );
+
+      const response = await api.get(
+        `/favoritos?usuario_id=${usuario.id}`
+      );
+
       setFavoritos(response.data || []);
+
     } catch (error) {
       console.error("Error al cargar favoritos:", error);
 
@@ -58,6 +66,7 @@ function Favoritos() {
         background: "#07110b",
         color: "#ffffff"
       });
+
     } catch (error) {
       console.error("Error al actualizar favorito:", error);
 
@@ -103,6 +112,7 @@ function Favoritos() {
         background: "#07110b",
         color: "#ffffff"
       });
+
     } catch (error) {
       console.error("Error al eliminar favorito:", error);
 
