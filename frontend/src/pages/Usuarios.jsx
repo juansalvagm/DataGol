@@ -3,28 +3,62 @@ import api from "../services/api";
 import Swal from "sweetalert2";
 
 function Usuarios() {
-  const [editandoId, setEditandoId] = useState(null);
 
-  const [formulario, setFormulario] = useState({
-    nombre: "",
-    email: "",
-    password: "",
-    rol: "usuario"
-  });
+  // USUARIO LOGUEADO
+  const usuario = JSON.parse(
+    localStorage.getItem("usuario")
+  );
+
+  // BLOQUEAR SI NO ES ADMIN
+  if (!usuario || usuario.rol !== "admin") {
+
+    return (
+      <div className="app-shell">
+        <div className="container">
+
+          <div className="card card-content">
+
+            <h1>Acceso denegado 🚫</h1>
+
+            <p>
+              No tienes permisos para acceder
+              a esta página.
+            </p>
+
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  const [editandoId, setEditandoId] =
+    useState(null);
+
+  const [formulario, setFormulario] =
+    useState({
+      nombre: "",
+      email: "",
+      password: "",
+      rol: "usuario"
+    });
 
   const manejarCambio = (e) => {
+
     setFormulario({
       ...formulario,
-      [e.target.name]: e.target.value
+      [e.target.name]:
+        e.target.value
     });
   };
 
   const crearUsuario = async (e) => {
+
     e.preventDefault();
 
     try {
 
-      // FORZAR SIEMPRE ROL USUARIO
+      // FORZAR ROL USUARIO
       const datosUsuario = {
         ...formulario,
         rol: "usuario"
@@ -39,10 +73,14 @@ function Usuarios() {
 
         Swal.fire({
           icon: "success",
-          title: "Usuario actualizado",
-          text: "Los datos se actualizaron correctamente.",
-          confirmButtonColor: "#19e35f",
-          background: "#07110b",
+          title:
+            "Usuario actualizado",
+          text:
+            "Los datos se actualizaron correctamente.",
+          confirmButtonColor:
+            "#19e35f",
+          background:
+            "#07110b",
           color: "#ffffff"
         });
 
@@ -57,10 +95,14 @@ function Usuarios() {
 
         Swal.fire({
           icon: "success",
-          title: "Usuario creado",
-          text: "El usuario se registró correctamente.",
-          confirmButtonColor: "#19e35f",
-          background: "#07110b",
+          title:
+            "Usuario creado",
+          text:
+            "El usuario se registró correctamente.",
+          confirmButtonColor:
+            "#19e35f",
+          background:
+            "#07110b",
           color: "#ffffff"
         });
       }
@@ -85,27 +127,41 @@ function Usuarios() {
         text:
           error.response?.data?.error ||
           "No se pudo guardar el usuario.",
-        confirmButtonColor: "#ef4444",
-        background: "#07110b",
+        confirmButtonColor:
+          "#ef4444",
+        background:
+          "#07110b",
         color: "#ffffff"
       });
     }
   };
 
   const volverLogin = () => {
-    localStorage.removeItem("usuario");
-    window.location.href = "/login";
+
+    localStorage.removeItem(
+      "usuario"
+    );
+
+    window.location.href =
+      "/login";
   };
 
   return (
     <div className="app-shell">
+
       <div className="container">
 
         <div className="page-header">
-          <h1>Crear usuario</h1>
+
+          <h1>
+            Crear usuario
+          </h1>
+
           <p>
-            Registra una nueva cuenta en DataGol
+            Registra una nueva cuenta
+            en DataGol
           </p>
+
         </div>
 
         <form
@@ -117,6 +173,7 @@ function Usuarios() {
             borderRadius: "30px"
           }}
         >
+
           <h2
             style={{
               margin: "0 0 24px",
@@ -204,6 +261,7 @@ function Usuarios() {
         </form>
 
       </div>
+
     </div>
   );
 }
