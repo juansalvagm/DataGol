@@ -4,8 +4,13 @@ const obtenerUsuarios = async (req, res) => {
   try {
     const usuarios = await usuarioModel.getAllUsuarios();
     res.json(usuarios);
+
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener usuarios" });
+    console.error(error);
+
+    res.status(500).json({
+      error: error.message
+    });
   }
 };
 
@@ -14,12 +19,19 @@ const obtenerUsuarioPorId = async (req, res) => {
     const usuario = await usuarioModel.getUsuarioById(req.params.id);
 
     if (!usuario) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
+      return res.status(404).json({
+        error: "Usuario no encontrado"
+      });
     }
 
     res.json(usuario);
+
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener el usuario" });
+    console.error(error);
+
+    res.status(500).json({
+      error: error.message
+    });
   }
 };
 
@@ -28,7 +40,9 @@ const crearUsuario = async (req, res) => {
     const { nombre, email, password, rol } = req.body;
 
     if (!nombre || !email || !password) {
-      return res.status(400).json({ error: "Nombre, email y password son obligatorios" });
+      return res.status(400).json({
+        error: "Nombre, email y password son obligatorios"
+      });
     }
 
     const resultado = await usuarioModel.createUsuario(
@@ -42,8 +56,13 @@ const crearUsuario = async (req, res) => {
       mensaje: "Usuario creado correctamente",
       id: resultado.insertId
     });
+
   } catch (error) {
-    res.status(500).json({ error: "Error al crear usuario" });
+    console.error(error);
+
+    res.status(500).json({
+      error: error.message
+    });
   }
 };
 
@@ -60,12 +79,21 @@ const actualizarUsuario = async (req, res) => {
     );
 
     if (resultado.affectedRows === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
+      return res.status(404).json({
+        error: "Usuario no encontrado"
+      });
     }
 
-    res.json({ mensaje: "Usuario actualizado correctamente" });
+    res.json({
+      mensaje: "Usuario actualizado correctamente"
+    });
+
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar usuario" });
+    console.error(error);
+
+    res.status(500).json({
+      error: error.message
+    });
   }
 };
 
@@ -74,12 +102,21 @@ const eliminarUsuario = async (req, res) => {
     const resultado = await usuarioModel.deleteUsuario(req.params.id);
 
     if (resultado.affectedRows === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
+      return res.status(404).json({
+        error: "Usuario no encontrado"
+      });
     }
 
-    res.json({ mensaje: "Usuario eliminado correctamente" });
+    res.json({
+      mensaje: "Usuario eliminado correctamente"
+    });
+
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar usuario" });
+    console.error(error);
+
+    res.status(500).json({
+      error: error.message
+    });
   }
 };
 
