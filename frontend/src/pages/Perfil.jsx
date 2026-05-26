@@ -3,144 +3,246 @@ import api from "../services/api";
 import Swal from "sweetalert2";
 
 function Perfil() {
-  const [usuarioId, setUsuarioId] = useState(null);
 
-  const [formulario, setFormulario] = useState({
-    nombre: "",
-    email: "",
-    password: "",
-    rol: "usuario"
-  });
+  const [usuarioId, setUsuarioId] =
+    useState(null);
+
+  const [formulario, setFormulario] =
+    useState({
+      nombre: "",
+      email: "",
+      password: "",
+      rol: "usuario"
+    });
 
   const cargarPerfil = async () => {
+
     try {
-      const usuarioGuardado = JSON.parse(
-        localStorage.getItem("usuario")
-      );
+
+      const usuarioGuardado =
+        JSON.parse(
+          localStorage.getItem(
+            "usuario"
+          )
+        );
 
       if (!usuarioGuardado) {
-        window.location.href = "/login";
+
+        window.location.href =
+          "/login";
+
         return;
       }
 
-      setUsuarioId(usuarioGuardado.id);
-
-      const response = await api.get(
-        `/usuarios/${usuarioGuardado.id}`
+      setUsuarioId(
+        usuarioGuardado.id
       );
 
-      const usuario = response.data;
+      const response =
+        await api.get(
+          `/usuarios/${usuarioGuardado.id}`
+        );
+
+      const usuario =
+        response.data;
 
       setFormulario({
-        nombre: usuario.nombre,
-        email: usuario.email,
+        nombre:
+          usuario.nombre,
+        email:
+          usuario.email,
         password: "",
-        rol: usuario.rol
+        rol:
+          usuario.rol
       });
 
     } catch (error) {
+
       console.error(error);
     }
   };
 
   useEffect(() => {
+
     cargarPerfil();
+
   }, []);
 
   const manejarCambio = (e) => {
+
     setFormulario({
       ...formulario,
-      [e.target.name]: e.target.value
+      [e.target.name]:
+        e.target.value
     });
   };
 
-  const guardarCambios = async (e) => {
+  const guardarCambios =
+    async (e) => {
+
     e.preventDefault();
 
     try {
-      await api.put(`/usuarios/${usuarioId}`, formulario);
+
+      await api.put(
+        `/usuarios/${usuarioId}`,
+        formulario
+      );
+
+      // ACTUALIZAR LOCALSTORAGE
+      const usuarioActualizado = {
+        ...JSON.parse(
+          localStorage.getItem(
+            "usuario"
+          )
+        ),
+        nombre:
+          formulario.nombre,
+        email:
+          formulario.email
+      };
+
+      localStorage.setItem(
+        "usuario",
+        JSON.stringify(
+          usuarioActualizado
+        )
+      );
 
       Swal.fire({
         icon: "success",
-        title: "Perfil actualizado",
-        text: "Tus datos se actualizaron correctamente.",
-        confirmButtonColor: "#19e35f",
-        background: "#07110b",
-        color: "#ffffff"
+        title:
+          "Perfil actualizado",
+        text:
+          "Tus datos se actualizaron correctamente.",
+        confirmButtonColor:
+          "#19e35f",
+        background:
+          "#07110b",
+        color:
+          "#ffffff"
       });
 
+      // RECARGAR NAVBAR
+      setTimeout(() => {
+
+        window.location.reload();
+
+      }, 1000);
+
     } catch (error) {
+
       console.error(error);
 
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "No se pudo actualizar el perfil.",
-        confirmButtonColor: "#ef4444",
-        background: "#07110b",
-        color: "#ffffff"
+        text:
+          "No se pudo actualizar el perfil.",
+        confirmButtonColor:
+          "#ef4444",
+        background:
+          "#07110b",
+        color:
+          "#ffffff"
       });
     }
   };
 
-  const eliminarCuenta = async () => {
-    const resultado = await Swal.fire({
-      title: "¿Eliminar cuenta?",
-      text: "Esta acción no se puede deshacer.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#19e35f",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-      background: "#07110b",
-      color: "#ffffff"
-    });
+  const eliminarCuenta =
+    async () => {
 
-    if (!resultado.isConfirmed) return;
+    const resultado =
+      await Swal.fire({
+        title:
+          "¿Eliminar cuenta?",
+        text:
+          "Esta acción no se puede deshacer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor:
+          "#ef4444",
+        cancelButtonColor:
+          "#19e35f",
+        confirmButtonText:
+          "Sí, eliminar",
+        cancelButtonText:
+          "Cancelar",
+        background:
+          "#07110b",
+        color:
+          "#ffffff"
+      });
+
+    if (
+      !resultado.isConfirmed
+    ) return;
 
     try {
-      await api.delete(`/usuarios/${usuarioId}`);
 
-      localStorage.removeItem("usuario");
+      await api.delete(
+        `/usuarios/${usuarioId}`
+      );
 
-      window.location.href = "/login";
+      localStorage.removeItem(
+        "usuario"
+      );
+
+      window.location.href =
+        "/login";
 
     } catch (error) {
+
       console.error(error);
     }
   };
 
   return (
     <div className="app-shell">
+
       <div className="container">
 
         <div className="page-header">
-          <h1>Mi perfil</h1>
-          <p>Gestiona tu cuenta</p>
+
+          <h1>
+            Mi perfil
+          </h1>
+
+          <p>
+            Gestiona tu cuenta
+          </p>
+
         </div>
 
         <form
-          onSubmit={guardarCambios}
+          onSubmit={
+            guardarCambios
+          }
           className="card card-content"
           style={{
             padding: "34px",
             borderRadius: "28px"
           }}
         >
+
           <div
             style={{
               display: "grid",
               gap: "16px"
             }}
           >
+
             <input
               type="text"
               name="nombre"
               placeholder="Nombre"
               className="input"
-              value={formulario.nombre}
-              onChange={manejarCambio}
+              value={
+                formulario.nombre
+              }
+              onChange={
+                manejarCambio
+              }
             />
 
             <input
@@ -148,8 +250,12 @@ function Perfil() {
               name="email"
               placeholder="Email"
               className="input"
-              value={formulario.email}
-              onChange={manejarCambio}
+              value={
+                formulario.email
+              }
+              onChange={
+                manejarCambio
+              }
             />
 
             <input
@@ -157,9 +263,14 @@ function Perfil() {
               name="password"
               placeholder="Nueva contraseña"
               className="input"
-              value={formulario.password}
-              onChange={manejarCambio}
+              value={
+                formulario.password
+              }
+              onChange={
+                manejarCambio
+              }
             />
+
           </div>
 
           <div
@@ -170,6 +281,7 @@ function Perfil() {
               flexWrap: "wrap"
             }}
           >
+
             <button
               type="submit"
               className="btn btn-primary"
@@ -180,13 +292,19 @@ function Perfil() {
             <button
               type="button"
               className="btn btn-danger"
-              onClick={eliminarCuenta}
+              onClick={
+                eliminarCuenta
+              }
             >
               Eliminar cuenta
             </button>
+
           </div>
+
         </form>
+
       </div>
+
     </div>
   );
 }
