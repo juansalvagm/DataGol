@@ -271,6 +271,18 @@ function Perfil() {
               }
             />
 
+            <p
+              style={{
+                color: "#9ca3af",
+                fontSize: "0.9rem",
+                marginTop: "-6px"
+              }}
+            >
+              ⚠️ Si cambias la contraseña,
+              recuerda guardarla.
+              Si la olvidas no podrás iniciar sesión.
+            </p>
+
           </div>
 
           <div
