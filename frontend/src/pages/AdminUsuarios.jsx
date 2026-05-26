@@ -31,25 +31,149 @@ function AdminUsuarios() {
       setUsuarios(response.data);
 
     } catch (error) {
+
       console.log(error);
     }
   };
 
   useEffect(() => {
+
     cargarUsuarios();
+
   }, []);
 
-  const eliminarUsuario = async (id) => {
+  // EDITAR USUARIO
+  const editarUsuario =
+    async (usuario) => {
 
-    const resultado = await Swal.fire({
-      title: "¿Eliminar usuario?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar"
-    });
+    const { value: formValues } =
+      await Swal.fire({
 
-    if (!resultado.isConfirmed) return;
+        title:
+          "Editar usuario",
+
+        html: `
+
+          <input
+            id="swal-nombre"
+            class="swal2-input"
+            placeholder="Nombre"
+            value="${usuario.nombre}"
+          >
+
+          <input
+            id="swal-email"
+            class="swal2-input"
+            placeholder="Email"
+            value="${usuario.email}"
+          >
+
+          <select
+            id="swal-rol"
+            class="swal2-input"
+          >
+
+            <option
+              value="usuario"
+              ${usuario.rol === "usuario"
+                ? "selected"
+                : ""}
+            >
+              Usuario
+            </option>
+
+            <option
+              value="admin"
+              ${usuario.rol === "admin"
+                ? "selected"
+                : ""}
+            >
+              Admin
+            </option>
+
+          </select>
+        `,
+
+        focusConfirm: false,
+
+        showCancelButton: true,
+
+        confirmButtonText:
+          "Guardar",
+
+        cancelButtonText:
+          "Cancelar",
+
+        preConfirm: () => {
+
+          return {
+
+            nombre:
+              document.getElementById(
+                "swal-nombre"
+              ).value,
+
+            email:
+              document.getElementById(
+                "swal-email"
+              ).value,
+
+            rol:
+              document.getElementById(
+                "swal-rol"
+              ).value
+          };
+        }
+      });
+
+    if (!formValues) return;
+
+    try {
+
+      await api.put(
+        `/usuarios/${usuario.id}`,
+        formValues
+      );
+
+      cargarUsuarios();
+
+      Swal.fire({
+        icon: "success",
+        title:
+          "Usuario actualizado"
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      Swal.fire({
+        icon: "error",
+        title:
+          "Error actualizando usuario"
+      });
+    }
+  };
+
+  // ELIMINAR USUARIO
+  const eliminarUsuario =
+    async (id) => {
+
+    const resultado =
+      await Swal.fire({
+        title:
+          "¿Eliminar usuario?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText:
+          "Eliminar",
+        cancelButtonText:
+          "Cancelar"
+      });
+
+    if (
+      !resultado.isConfirmed
+    ) return;
 
     try {
 
@@ -61,10 +185,12 @@ function AdminUsuarios() {
 
       Swal.fire({
         icon: "success",
-        title: "Usuario eliminado"
+        title:
+          "Usuario eliminado"
       });
 
     } catch (error) {
+
       console.log(error);
     }
   };
@@ -111,16 +237,38 @@ function AdminUsuarios() {
                 </strong>
               </p>
 
-              <button
-                className="btn btn-danger"
-                onClick={() =>
-                  eliminarUsuario(
-                    usuario.id
-                  )
-                }
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  flexWrap: "wrap",
+                  marginTop: "18px"
+                }}
               >
-                ❌ Eliminar
-              </button>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={() =>
+                    editarUsuario(
+                      usuario
+                    )
+                  }
+                >
+                  ✏️ Editar
+                </button>
+
+                <button
+                  className="btn btn-danger"
+                  onClick={() =>
+                    eliminarUsuario(
+                      usuario.id
+                    )
+                  }
+                >
+                  ❌ Eliminar
+                </button>
+
+              </div>
 
             </div>
 
