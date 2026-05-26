@@ -104,6 +104,9 @@ function AdminUsuarios() {
         cancelButtonText:
           "Cancelar",
 
+        footer:
+          "⚠️ Si cambias datos o roles, el usuario deberá usar la nueva información para iniciar sesión.",
+
         preConfirm: () => {
 
           return {
