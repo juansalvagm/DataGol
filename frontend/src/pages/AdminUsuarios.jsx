@@ -92,6 +92,14 @@ function AdminUsuarios() {
             </option>
 
           </select>
+
+          <input
+            id="swal-password"
+            class="swal2-input"
+            placeholder="Nueva contraseña"
+            type="password"
+          >
+
         `,
 
         focusConfirm: false,
@@ -124,6 +132,11 @@ function AdminUsuarios() {
             rol:
               document.getElementById(
                 "swal-rol"
+              ).value,
+
+            password:
+              document.getElementById(
+                "swal-password"
               ).value
           };
         }
