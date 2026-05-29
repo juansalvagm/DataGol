@@ -82,6 +82,25 @@ function Perfil() {
 
     e.preventDefault();
 
+    if (!formulario.password.trim()) {
+
+      Swal.fire({
+        icon: "warning",
+        title:
+          "Contraseña obligatoria",
+        text:
+          "Debes introducir una contraseña para guardar los cambios.",
+        confirmButtonColor:
+          "#f59e0b",
+        background:
+          "#07110b",
+        color:
+          "#ffffff"
+      });
+
+      return;
+    }
+
     try {
 
       await api.put(
@@ -89,7 +108,6 @@ function Perfil() {
         formulario
       );
 
-      // ACTUALIZAR LOCALSTORAGE
       const usuarioActualizado = {
         ...JSON.parse(
           localStorage.getItem(
@@ -123,7 +141,6 @@ function Perfil() {
           "#ffffff"
       });
 
-      // RECARGAR NAVBAR
       setTimeout(() => {
 
         window.location.reload();
@@ -261,7 +278,7 @@ function Perfil() {
             <input
               type="password"
               name="password"
-              placeholder="Nueva contraseña"
+              placeholder="Contraseña obligatoria para guardar cambios"
               className="input"
               value={
                 formulario.password
@@ -269,18 +286,17 @@ function Perfil() {
               onChange={
                 manejarCambio
               }
+              required
             />
 
             <p
               style={{
-                color: "#9ca3af",
+                color: "#f59e0b",
                 fontSize: "0.9rem",
                 marginTop: "-6px"
               }}
             >
-              ⚠️ Si cambias la contraseña,
-              recuerda guardarla.
-              Si la olvidas no podrás iniciar sesión.
+              ⚠️ Debes introducir una contraseña para poder guardar cualquier cambio.
             </p>
 
           </div>
