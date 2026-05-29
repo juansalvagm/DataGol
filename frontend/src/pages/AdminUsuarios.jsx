@@ -96,7 +96,7 @@ function AdminUsuarios() {
           <input
             id="swal-password"
             class="swal2-input"
-            placeholder="Nueva contraseña"
+            placeholder="Contraseña obligatoria"
             type="password"
           >
 
@@ -113,9 +113,23 @@ function AdminUsuarios() {
           "Cancelar",
 
         footer:
-          "⚠️ Si cambias datos o roles, el usuario deberá usar la nueva información para iniciar sesión.",
+          "⚠️ Debes introducir una contraseña para guardar los cambios del usuario.",
 
         preConfirm: () => {
+
+          const password =
+            document.getElementById(
+              "swal-password"
+            ).value;
+
+          if (!password.trim()) {
+
+            Swal.showValidationMessage(
+              "Debes introducir una contraseña para guardar los cambios"
+            );
+
+            return false;
+          }
 
           return {
 
@@ -134,10 +148,7 @@ function AdminUsuarios() {
                 "swal-rol"
               ).value,
 
-            password:
-              document.getElementById(
-                "swal-password"
-              ).value
+            password
           };
         }
       });
