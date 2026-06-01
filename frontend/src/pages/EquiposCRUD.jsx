@@ -181,38 +181,66 @@ function EquiposCRUD() {
     }
   };
 
-  const eliminarEquipo = async (id) => {
+ const eliminarEquipo = async (id) => {
 
-    const resultado =
-      await Swal.fire({
-        title: "¿Eliminar equipo?",
-        icon: "warning",
-        showCancelButton: true
-      });
+  const resultado =
+    await Swal.fire({
+      title: "¿Eliminar equipo?",
+      icon: "warning",
+      showCancelButton: true
+    });
 
-    if (!resultado.isConfirmed) return;
+  if (!resultado.isConfirmed) return;
 
-    try {
+  try {
 
-      await api.delete(
-        `/equiposcrud/${id}`
-      );
+    await api.delete(
+      `/equiposcrud/${id}`
+    );
 
-      cargarEquipos();
+    cargarEquipos();
 
-      Swal.fire({
-        icon: "success",
-        title: "Equipo eliminado"
-      });
+    Swal.fire({
+      icon: "success",
+      title: "Equipo eliminado"
+    });
 
-    } catch (error) {
+  } catch (error) {
 
-      console.log(error);
+    console.log(error);
 
-    }
-  };
+  }
+};
 
-  return (
+const agregarFavorito = async (equipo) => {
+  const usuario = JSON.parse(
+    localStorage.getItem("usuario")
+  );
+
+  try {
+    await api.post("/favoritos", {
+      usuario_id: usuario.id,
+      tipo: "equipo",
+      referencia_id: equipo.id,
+      nombre: equipo.nombre
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Añadido a favoritos"
+    });
+
+  } catch (error) {
+
+    Swal.fire({
+      icon: "error",
+      title: "Ya está en favoritos"
+    });
+
+  }
+};
+
+return (
     <div className="app-shell">
 
       <div className="container">
@@ -310,31 +338,41 @@ function EquiposCRUD() {
                 <strong>País:</strong> {equipo.pais}
               </p>
 
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  marginTop: "15px"
-                }}
-              >
+             <div
+  style={{
+    display: "flex",
+    gap: "10px",
+    marginTop: "15px",
+    flexWrap: "wrap"
+  }}
+>
 
-                <button
-                  className="btn btn-primary"
-                  onClick={() =>
-                    editarEquipo(equipo)
-                  }
-                >
-                  ✏️ Editar
-                </button>
+  <button
+    className="btn btn-primary"
+    onClick={() =>
+      editarEquipo(equipo)
+    }
+  >
+    ✏️ Editar
+  </button>
 
-                <button
-                  className="btn btn-danger"
-                  onClick={() =>
-                    eliminarEquipo(equipo.id)
-                  }
-                >
-                  ❌ Eliminar
-                </button>
+  <button
+    className="btn btn-danger"
+    onClick={() =>
+      eliminarEquipo(equipo.id)
+    }
+  >
+    ❌ Eliminar
+  </button>
+
+  <button
+    className="btn"
+    onClick={() =>
+      agregarFavorito(equipo)
+    }
+  >
+    ⭐ Favorito
+  </button>
 
               </div>
 
