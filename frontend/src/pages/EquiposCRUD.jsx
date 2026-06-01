@@ -8,11 +8,20 @@ function EquiposCRUD() {
     useState([]);
 
   const [formulario, setFormulario] =
-    useState({
-      nombre: "",
-      liga: "",
-      pais: ""
-    });
+  useState({
+    nombre: "",
+    liga: "",
+    pais: "",
+    estadio: "",
+    fundacion: "",
+    escudo_url: "",
+    puntos: 0,
+    goles_favor: 0,
+    goles_contra: 0,
+    usuario_id: JSON.parse(
+      localStorage.getItem("usuario")
+    )?.id || 0
+  });
 
   const cargarEquipos =
     async () => {
@@ -43,65 +52,54 @@ function EquiposCRUD() {
   const manejarCambio =
     (e) => {
 
-    setFormulario({
-      ...formulario,
-      [e.target.name]:
-        e.target.value
-    });
+   setFormulario({
+  nombre: "",
+  liga: "",
+  pais: "",
+  estadio: "",
+  fundacion: "",
+  escudo_url: "",
+  puntos: 0,
+  goles_favor: 0,
+  goles_contra: 0,
+  usuario_id: JSON.parse(
+    localStorage.getItem("usuario")
+  )?.id || 0
+});
   };
 
   const crearEquipo =
-  async (e) => {
+    async (e) => {
 
-  e.preventDefault();
+    e.preventDefault();
 
-  if (
-    !formulario.nombre.trim() ||
-    !formulario.liga.trim() ||
-    !formulario.pais.trim()
-  ) {
+    try {
 
-    Swal.fire({
-      icon: "warning",
-      title: "Campos obligatorios",
-      text: "Debes rellenar Nombre, Liga y País."
-    });
+      await api.post(
+        "/equiposcrud",
+        formulario
+      );
 
-    return;
-  }
+      Swal.fire({
+        icon: "success",
+        title:
+          "Equipo creado"
+      });
 
-  try {
+      setFormulario({
+        nombre: "",
+        liga: "",
+        pais: ""
+      });
 
-    await api.post(
-      "/equiposcrud",
-      formulario
-    );
+      cargarEquipos();
 
-    Swal.fire({
-      icon: "success",
-      title:
-        "Equipo creado"
-    });
+    } catch (error) {
 
-    setFormulario({
-      nombre: "",
-      liga: "",
-      pais: ""
-    });
+      console.log(error);
+    }
+  };
 
-    cargarEquipos();
-
-  } catch (error) {
-
-    console.log(error);
-
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "No se pudo crear el equipo"
-    });
-  }
-};
   const editarEquipo =
     async (equipo) => {
 
@@ -246,39 +244,83 @@ function EquiposCRUD() {
   name="nombre"
   placeholder="Nombre"
   className="input"
-  value={
-    formulario.nombre
-  }
-  onChange={
-    manejarCambio
-  }
+  value={formulario.nombre}
+  onChange={manejarCambio}
   required
 />
+
 <input
   type="text"
   name="liga"
   placeholder="Liga"
   className="input"
-  value={
-    formulario.liga
-  }
-  onChange={
-    manejarCambio
-  }
+  value={formulario.liga}
+  onChange={manejarCambio}
   required
 />
+
 <input
   type="text"
   name="pais"
   placeholder="País"
   className="input"
-  value={
-    formulario.pais
-  }
-  onChange={
-    manejarCambio
-  }
+  value={formulario.pais}
+  onChange={manejarCambio}
   required
+/>
+
+<input
+  type="text"
+  name="estadio"
+  placeholder="Estadio"
+  className="input"
+  value={formulario.estadio}
+  onChange={manejarCambio}
+/>
+
+<input
+  type="number"
+  name="fundacion"
+  placeholder="Fundación"
+  className="input"
+  value={formulario.fundacion}
+  onChange={manejarCambio}
+/>
+
+<input
+  type="text"
+  name="escudo_url"
+  placeholder="URL Escudo"
+  className="input"
+  value={formulario.escudo_url}
+  onChange={manejarCambio}
+/>
+
+<input
+  type="number"
+  name="puntos"
+  placeholder="Puntos"
+  className="input"
+  value={formulario.puntos}
+  onChange={manejarCambio}
+/>
+
+<input
+  type="number"
+  name="goles_favor"
+  placeholder="Goles a favor"
+  className="input"
+  value={formulario.goles_favor}
+  onChange={manejarCambio}
+/>
+
+<input
+  type="number"
+  name="goles_contra"
+  placeholder="Goles en contra"
+  className="input"
+  value={formulario.goles_contra}
+  onChange={manejarCambio}
 />
 
           <button

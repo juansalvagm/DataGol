@@ -4,6 +4,7 @@ const obtenerEquipos = async () => {
   const [rows] = await db.query(
     "SELECT * FROM equipos"
   );
+
   return rows;
 };
 
@@ -19,58 +20,93 @@ const obtenerEquipoPorId = async (id) => {
 const crearEquipo = async (
   nombre,
   liga,
-  pais
+  pais,
+  estadio,
+  fundacion,
+  escudo_url,
+  puntos,
+  goles_favor,
+  goles_contra,
+  usuario_id
 ) => {
-
-  const [result] =
-    await db.query(
-
-      `INSERT INTO equipos
-       (nombre, liga, pais)
-       VALUES (?, ?, ?)`,
-
-      [nombre, liga, pais]
-    );
-
-  return result;
-};
-
-const actualizarEquipo =
-  async (
-    id,
-    nombre,
-    liga,
-    pais
-  ) => {
-
-  const [result] =
-    await db.query(
-
-      `UPDATE equipos
-       SET nombre = ?,
-           liga = ?,
-           pais = ?
-       WHERE id = ?`,
-
-      [
-        nombre,
-        liga,
-        pais,
-        id
-      ]
-    );
+  const [result] = await db.query(
+    `INSERT INTO equipos
+     (
+       nombre,
+       liga,
+       pais,
+       estadio,
+       fundacion,
+       escudo_url,
+       puntos,
+       goles_favor,
+       goles_contra,
+       usuario_id
+     )
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      nombre,
+      liga,
+      pais,
+      estadio,
+      fundacion,
+      escudo_url,
+      puntos,
+      goles_favor,
+      goles_contra,
+      usuario_id
+    ]
+  );
 
   return result;
 };
 
-const eliminarEquipo =
-  async (id) => {
+const actualizarEquipo = async (
+  id,
+  nombre,
+  liga,
+  pais,
+  estadio,
+  fundacion,
+  escudo_url,
+  puntos,
+  goles_favor,
+  goles_contra
+) => {
+  const [result] = await db.query(
+    `UPDATE equipos
+     SET nombre = ?,
+         liga = ?,
+         pais = ?,
+         estadio = ?,
+         fundacion = ?,
+         escudo_url = ?,
+         puntos = ?,
+         goles_favor = ?,
+         goles_contra = ?
+     WHERE id = ?`,
+    [
+      nombre,
+      liga,
+      pais,
+      estadio,
+      fundacion,
+      escudo_url,
+      puntos,
+      goles_favor,
+      goles_contra,
+      id
+    ]
+  );
 
-  const [result] =
-    await db.query(
-      "DELETE FROM equipos WHERE id = ?",
-      [id]
-    );
+  return result;
+};
+
+const eliminarEquipo = async (id) => {
+  const [result] = await db.query(
+    "DELETE FROM equipos WHERE id = ?",
+    [id]
+  );
 
   return result;
 };

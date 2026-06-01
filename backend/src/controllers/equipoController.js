@@ -51,14 +51,28 @@ const crearEquipo =
     const {
       nombre,
       liga,
-      pais
+      pais,
+      estadio,
+      fundacion,
+      escudo_url,
+      puntos,
+      goles_favor,
+      goles_contra,
+      usuario_id
     } = req.body;
 
     const resultado =
       await Equipo.crearEquipo(
         nombre,
         liga,
-        pais
+        pais,
+        estadio,
+        fundacion,
+        escudo_url,
+        puntos,
+        goles_favor,
+        goles_contra,
+        usuario_id
       );
 
     res.json(resultado);
@@ -80,7 +94,13 @@ const actualizarEquipo =
     const {
       nombre,
       liga,
-      pais
+      pais,
+      estadio,
+      fundacion,
+      escudo_url,
+      puntos,
+      goles_favor,
+      goles_contra
     } = req.body;
 
     const resultado =
@@ -88,7 +108,13 @@ const actualizarEquipo =
         req.params.id,
         nombre,
         liga,
-        pais
+        pais,
+        estadio,
+        fundacion,
+        escudo_url,
+        puntos,
+        goles_favor,
+        goles_contra
       );
 
     res.json(resultado);
