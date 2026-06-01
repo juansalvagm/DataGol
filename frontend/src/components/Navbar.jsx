@@ -89,12 +89,12 @@ function Navbar() {
             Favoritos
           </Link>
 
-          <Link to="/perfil" className="nav-pill">
-            Mi perfil
-          </Link>
-
           <Link to="/equiposcrud" className="nav-pill">
           Equipos
+          </Link>
+          
+           <Link to="/perfil" className="nav-pill">
+            Mi perfil
           </Link>
 
           {usuario?.rol === "admin" && (
