@@ -21,12 +21,7 @@ const crearEquipo = async (
   nombre,
   liga,
   pais,
-  estadio,
-  fundacion,
   escudo_url,
-  puntos,
-  goles_favor,
-  goles_contra,
   usuario_id
 ) => {
   const [result] = await db.query(
@@ -35,25 +30,15 @@ const crearEquipo = async (
        nombre,
        liga,
        pais,
-       estadio,
-       fundacion,
        escudo_url,
-       puntos,
-       goles_favor,
-       goles_contra,
        usuario_id
      )
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+     VALUES (?, ?, ?, ?, ?)`,
     [
       nombre,
       liga,
       pais,
-      estadio,
-      fundacion,
       escudo_url,
-      puntos,
-      goles_favor,
-      goles_contra,
       usuario_id
     ]
   );
@@ -66,35 +51,20 @@ const actualizarEquipo = async (
   nombre,
   liga,
   pais,
-  estadio,
-  fundacion,
-  escudo_url,
-  puntos,
-  goles_favor,
-  goles_contra
+  escudo_url
 ) => {
   const [result] = await db.query(
     `UPDATE equipos
      SET nombre = ?,
          liga = ?,
          pais = ?,
-         estadio = ?,
-         fundacion = ?,
-         escudo_url = ?,
-         puntos = ?,
-         goles_favor = ?,
-         goles_contra = ?
+         escudo_url = ?
      WHERE id = ?`,
     [
       nombre,
       liga,
       pais,
-      estadio,
-      fundacion,
       escudo_url,
-      puntos,
-      goles_favor,
-      goles_contra,
       id
     ]
   );

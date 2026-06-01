@@ -52,12 +52,7 @@ const crearEquipo =
       nombre,
       liga,
       pais,
-      estadio,
-      fundacion,
       escudo_url,
-      puntos,
-      goles_favor,
-      goles_contra,
       usuario_id
     } = req.body;
 
@@ -66,12 +61,7 @@ const crearEquipo =
         nombre,
         liga,
         pais,
-        estadio,
-        fundacion,
         escudo_url,
-        puntos,
-        goles_favor,
-        goles_contra,
         usuario_id
       );
 
@@ -95,12 +85,7 @@ const actualizarEquipo =
       nombre,
       liga,
       pais,
-      estadio,
-      fundacion,
-      escudo_url,
-      puntos,
-      goles_favor,
-      goles_contra
+      escudo_url
     } = req.body;
 
     const resultado =
@@ -109,12 +94,7 @@ const actualizarEquipo =
         nombre,
         liga,
         pais,
-        estadio,
-        fundacion,
-        escudo_url,
-        puntos,
-        goles_favor,
-        goles_contra
+        escudo_url
       );
 
     res.json(resultado);
