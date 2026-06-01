@@ -9,7 +9,12 @@ function EquiposCRUD() {
     nombre: "",
     liga: "",
     pais: "",
+    estadio: "",
+    fundacion: 0,
     escudo_url: "",
+    puntos: 0,
+    goles_favor: 0,
+    goles_contra: 0,
     usuario_id:
       JSON.parse(localStorage.getItem("usuario"))?.id || 0
   });
@@ -49,7 +54,12 @@ function EquiposCRUD() {
         nombre: "",
         liga: "",
         pais: "",
+        estadio: "",
+        fundacion: 0,
         escudo_url: "",
+        puntos: 0,
+        goles_favor: 0,
+        goles_contra: 0,
         usuario_id:
           JSON.parse(localStorage.getItem("usuario"))?.id || 0
       });
@@ -58,6 +68,11 @@ function EquiposCRUD() {
 
     } catch (error) {
       console.log(error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error al crear equipo"
+      });
     }
   };
 
@@ -119,7 +134,15 @@ function EquiposCRUD() {
             escudo_url:
               document.getElementById(
                 "swal-escudo"
-              ).value
+              ).value,
+
+            estadio: equipo.estadio || "",
+            fundacion: equipo.fundacion || 0,
+            puntos: equipo.puntos || 0,
+            goles_favor:
+              equipo.goles_favor || 0,
+            goles_contra:
+              equipo.goles_contra || 0
           };
         }
       });
