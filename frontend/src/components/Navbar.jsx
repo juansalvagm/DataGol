@@ -92,6 +92,10 @@ function Navbar() {
           <Link to="/perfil" className="nav-pill">
             Mi perfil
           </Link>
+          
+          <Link to="/equiposcrud">
+           CRUD Equipos
+          </Link>
 
           {usuario?.rol === "admin" && (
             <Link
@@ -100,6 +104,7 @@ function Navbar() {
             >
               Usuarios 👑
             </Link>
+            
           )}
 
           <button
