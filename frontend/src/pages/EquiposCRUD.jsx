@@ -21,10 +21,22 @@ function EquiposCRUD() {
 
   const cargarEquipos = async () => {
     try {
-      const response = await api.get("/equiposcrud");
+
+      const usuario = JSON.parse(
+        localStorage.getItem("usuario")
+      );
+
+      const response =
+        await api.get(
+          `/equiposcrud?usuario_id=${usuario.id}`
+        );
+
       setEquipos(response.data);
+
     } catch (error) {
+
       console.log(error);
+
     }
   };
 
@@ -43,7 +55,11 @@ function EquiposCRUD() {
     e.preventDefault();
 
     try {
-      await api.post("/equiposcrud", formulario);
+
+      await api.post(
+        "/equiposcrud",
+        formulario
+      );
 
       Swal.fire({
         icon: "success",
@@ -61,12 +77,15 @@ function EquiposCRUD() {
         goles_favor: 0,
         goles_contra: 0,
         usuario_id:
-          JSON.parse(localStorage.getItem("usuario"))?.id || 0
+          JSON.parse(
+            localStorage.getItem("usuario")
+          )?.id || 0
       });
 
       cargarEquipos();
 
     } catch (error) {
+
       console.log(error);
 
       Swal.fire({
@@ -134,15 +153,7 @@ function EquiposCRUD() {
             escudo_url:
               document.getElementById(
                 "swal-escudo"
-              ).value,
-
-            estadio: equipo.estadio || "",
-            fundacion: equipo.fundacion || 0,
-            puntos: equipo.puntos || 0,
-            goles_favor:
-              equipo.goles_favor || 0,
-            goles_contra:
-              equipo.goles_contra || 0
+              ).value
           };
         }
       });
@@ -164,7 +175,9 @@ function EquiposCRUD() {
       });
 
     } catch (error) {
+
       console.log(error);
+
     }
   };
 
@@ -193,7 +206,9 @@ function EquiposCRUD() {
       });
 
     } catch (error) {
+
       console.log(error);
+
     }
   };
 
@@ -265,8 +280,7 @@ function EquiposCRUD() {
 
         <div className="grid list-grid">
 
-          {equipos.map(
-            (equipo) => (
+          {equipos.map((equipo) => (
 
             <div
               key={equipo.id}
@@ -316,9 +330,7 @@ function EquiposCRUD() {
                 <button
                   className="btn btn-danger"
                   onClick={() =>
-                    eliminarEquipo(
-                      equipo.id
-                    )
+                    eliminarEquipo(equipo.id)
                   }
                 >
                   ❌ Eliminar

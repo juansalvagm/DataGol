@@ -8,6 +8,15 @@ const obtenerEquipos = async () => {
   return rows;
 };
 
+const obtenerEquiposPorUsuario = async (usuario_id) => {
+  const [rows] = await db.query(
+    "SELECT * FROM equipos WHERE usuario_id = ?",
+    [usuario_id]
+  );
+
+  return rows;
+};
+
 const obtenerEquipoPorId = async (id) => {
   const [rows] = await db.query(
     "SELECT * FROM equipos WHERE id = ?",
@@ -83,6 +92,7 @@ const eliminarEquipo = async (id) => {
 
 module.exports = {
   obtenerEquipos,
+  obtenerEquiposPorUsuario,
   obtenerEquipoPorId,
   crearEquipo,
   actualizarEquipo,

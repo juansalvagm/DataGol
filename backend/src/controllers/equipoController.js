@@ -8,8 +8,13 @@ const obtenerEquipos =
 
   try {
 
+    const { usuario_id } =
+      req.query;
+
     const equipos =
-      await Equipo.obtenerEquipos();
+      usuario_id
+        ? await Equipo.obtenerEquiposPorUsuario(usuario_id)
+        : await Equipo.obtenerEquipos();
 
     res.json(equipos);
 
