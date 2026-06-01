@@ -50,23 +50,13 @@ function EquiposCRUD() {
   }, []);
 
   const manejarCambio =
-    (e) => {
+  (e) => {
 
-  const [formulario, setFormulario] =
-  useState({
-    nombre: "",
-    liga: "",
-    pais: "",
-    estadio: "",
-    fundacion: "",
-    escudo_url: "",
-    puntos: "",
-    goles_favor: "",
-    goles_contra: "",
-    usuario_id: JSON.parse(
-      localStorage.getItem("usuario")
-    )?.id || 0
-  });
+    setFormulario({
+      ...formulario,
+      [e.target.name]:
+        e.target.value
+    });
   };
 
   const crearEquipo =
@@ -88,10 +78,19 @@ function EquiposCRUD() {
       });
 
       setFormulario({
-        nombre: "",
-        liga: "",
-        pais: ""
-      });
+  nombre: "",
+  liga: "",
+  pais: "",
+  estadio: "",
+  fundacion: "",
+  escudo_url: "",
+  puntos: "",
+  goles_favor: "",
+  goles_contra: "",
+  usuario_id: JSON.parse(
+    localStorage.getItem("usuario")
+  )?.id || 0
+});
 
       cargarEquipos();
 
