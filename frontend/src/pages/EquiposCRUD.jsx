@@ -246,7 +246,7 @@ return (
       <div className="container">
 
         <div className="page-header">
-          <h1>CRUD Equipos ⚽</h1>
+          <h1> Equipos ⚽</h1>
           <p>Gestión de equipos</p>
         </div>
 
