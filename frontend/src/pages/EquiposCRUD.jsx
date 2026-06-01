@@ -51,37 +51,57 @@ function EquiposCRUD() {
   };
 
   const crearEquipo =
-    async (e) => {
+  async (e) => {
 
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
+  if (
+    !formulario.nombre.trim() ||
+    !formulario.liga.trim() ||
+    !formulario.pais.trim()
+  ) {
 
-      await api.post(
-        "/equiposcrud",
-        formulario
-      );
+    Swal.fire({
+      icon: "warning",
+      title: "Campos obligatorios",
+      text: "Debes rellenar Nombre, Liga y País."
+    });
 
-      Swal.fire({
-        icon: "success",
-        title:
-          "Equipo creado"
-      });
+    return;
+  }
 
-      setFormulario({
-        nombre: "",
-        liga: "",
-        pais: ""
-      });
+  try {
 
-      cargarEquipos();
+    await api.post(
+      "/equiposcrud",
+      formulario
+    );
 
-    } catch (error) {
+    Swal.fire({
+      icon: "success",
+      title:
+        "Equipo creado"
+    });
 
-      console.log(error);
-    }
-  };
+    setFormulario({
+      nombre: "",
+      liga: "",
+      pais: ""
+    });
 
+    cargarEquipos();
+
+  } catch (error) {
+
+    console.log(error);
+
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo crear el equipo"
+    });
+  }
+};
   const editarEquipo =
     async (equipo) => {
 
@@ -222,43 +242,44 @@ function EquiposCRUD() {
         >
 
           <input
-            type="text"
-            name="nombre"
-            placeholder="Nombre"
-            className="input"
-            value={
-              formulario.nombre
-            }
-            onChange={
-              manejarCambio
-            }
-          />
-
-          <input
-            type="text"
-            name="liga"
-            placeholder="Liga"
-            className="input"
-            value={
-              formulario.liga
-            }
-            onChange={
-              manejarCambio
-            }
-          />
-
-          <input
-            type="text"
-            name="pais"
-            placeholder="País"
-            className="input"
-            value={
-              formulario.pais
-            }
-            onChange={
-              manejarCambio
-            }
-          />
+  type="text"
+  name="nombre"
+  placeholder="Nombre"
+  className="input"
+  value={
+    formulario.nombre
+  }
+  onChange={
+    manejarCambio
+  }
+  required
+/>
+<input
+  type="text"
+  name="liga"
+  placeholder="Liga"
+  className="input"
+  value={
+    formulario.liga
+  }
+  onChange={
+    manejarCambio
+  }
+  required
+/>
+<input
+  type="text"
+  name="pais"
+  placeholder="País"
+  className="input"
+  value={
+    formulario.pais
+  }
+  onChange={
+    manejarCambio
+  }
+  required
+/>
 
           <button
             type="submit"
