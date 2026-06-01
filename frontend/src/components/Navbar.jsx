@@ -92,9 +92,9 @@ function Navbar() {
           <Link to="/perfil" className="nav-pill">
             Mi perfil
           </Link>
-          
-          <Link to="/equiposcrud">
-           CRUD Equipos
+
+          <Link to="/equiposcrud" className="nav-pill">
+          Equipos
           </Link>
 
           {usuario?.rol === "admin" && (
