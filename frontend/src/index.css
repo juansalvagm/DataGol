@@ -949,3 +949,14 @@ body[data-theme="light"] .search-input::placeholder {
 .card-content .input {
   margin-bottom: 10px;
 }
+.card.card-content {
+  padding: 20px;
+}
+
+.card.card-content p {
+  margin: 8px 0;
+}
+
+.card.card-content h3 {
+  margin: 10px 0;
+}
