@@ -933,3 +933,10 @@ body[data-theme="light"] .recharts-polar-grid-angle line,
 body[data-theme="light"] .recharts-polar-grid-concentric polygon {
   stroke: rgba(0, 0, 0, 0.18);
 }
+body[data-theme="light"] .input::placeholder {
+  color: rgba(6, 18, 10, 0.55);
+}
+
+body[data-theme="light"] .search-input::placeholder {
+  color: rgba(6, 18, 10, 0.55);
+}
