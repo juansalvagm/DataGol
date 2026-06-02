@@ -940,8 +940,12 @@ body[data-theme="light"] .input::placeholder {
 body[data-theme="light"] .search-input::placeholder {
   color: rgba(6, 18, 10, 0.55);
 }
-.card-content {
+.card-content form {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.card-content .input {
+  margin-bottom: 10px;
 }
