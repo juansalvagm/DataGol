@@ -365,14 +365,7 @@ return (
     ❌ Eliminar
   </button>
 
-  <button
-    className="btn"
-    onClick={() =>
-      agregarFavorito(equipo)
-    }
-  >
-    ⭐ Favorito
-  </button>
+
 
               </div>
 
