@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 
 function JugadoresCRUD() {
   const [jugadores, setJugadores] = useState([]);
+  const [jugadorEditando, setJugadorEditando] =
+    useState(null);
 
   const [formulario, setFormulario] = useState({
     nombre: "",
@@ -41,19 +43,50 @@ function JugadoresCRUD() {
     });
   };
 
+  const editarJugador = (jugador) => {
+    setFormulario({
+      nombre: jugador.nombre,
+      posicion: jugador.posicion,
+      nacionalidad: jugador.nacionalidad,
+      equipo_id: jugador.equipo_id,
+      usuario_id: jugador.usuario_id
+    });
+
+    setJugadorEditando(jugador.id);
+  };
+
   const crearJugador = async (e) => {
     e.preventDefault();
 
     try {
-      await api.post(
-        "/jugadorescrud",
-        formulario
-      );
 
-      Swal.fire({
-        icon: "success",
-        title: "Jugador creado"
-      });
+      if (jugadorEditando) {
+
+        await api.put(
+          `/jugadorescrud/${jugadorEditando}`,
+          formulario
+        );
+
+        Swal.fire({
+          icon: "success",
+          title: "Jugador actualizado"
+        });
+
+        setJugadorEditando(null);
+
+      } else {
+
+        await api.post(
+          "/jugadorescrud",
+          formulario
+        );
+
+        Swal.fire({
+          icon: "success",
+          title: "Jugador creado"
+        });
+
+      }
 
       setFormulario({
         nombre: "",
@@ -96,12 +129,8 @@ function JugadoresCRUD() {
       <div className="container">
 
         <div className="page-header">
-          <h1>
-            CRUD Jugadores ⚽
-          </h1>
-          <p>
-            Gestión de jugadores
-          </p>
+          <h1>CRUD Jugadores ⚽</h1>
+          <p>Gestión de jugadores</p>
         </div>
 
         <form
@@ -156,7 +185,11 @@ function JugadoresCRUD() {
             type="submit"
             className="btn btn-primary"
           >
-            ➕ Crear jugador
+            {
+              jugadorEditando
+                ? "💾 Guardar cambios"
+                : "➕ Crear jugador"
+            }
           </button>
 
         </form>
@@ -173,34 +206,40 @@ function JugadoresCRUD() {
                 </h3>
 
                 <p>
-                  Posición:
-                  {" "}
-                  {jugador.posicion}
+                  Posición: {jugador.posicion}
                 </p>
 
                 <p>
-                  Nacionalidad:
-                  {" "}
-                  {jugador.nacionalidad}
+                  Nacionalidad: {jugador.nacionalidad}
                 </p>
 
-                <button
-  className="btn btn-primary"
-  onClick={() =>
-    editarJugador(jugador)
-  }
->
-  ✏️ Editar
-</button>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    marginTop: "15px"
+                  }}
+                >
+                  <button
+                    className="btn btn-primary"
+                    onClick={() =>
+                      editarJugador(jugador)
+                    }
+                  >
+                    ✏️ Editar
+                  </button>
 
-<button
-  className="btn btn-danger"
-  onClick={() =>
-    eliminarJugador(jugador.id)
-  }
->
-  ❌ Eliminar
-</button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() =>
+                      eliminarJugador(
+                        jugador.id
+                      )
+                    }
+                  >
+                    ❌ Eliminar
+                  </button>
+                </div>
 
               </div>
             )
