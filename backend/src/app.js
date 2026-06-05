@@ -9,7 +9,7 @@ const statsRoutes = require("./routes/statsRoutes");
 const authRoutes = require("./routes/authRoutes");
 const noticiasRoutes = require("./routes/noticiasRoutes");
 const equipoRoutes = require("./routes/equiposRoutes");
-
+const jugadorCrudRoutes = require("./routes/jugadorCrudRoutes");
 const app = express();
 
 app.use(cors());
@@ -27,5 +27,5 @@ app.use("/api/stats", statsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/noticias", noticiasRoutes);
 app.use("/api/equiposcrud",equipoRoutes);
-
+app.use("/api/jugadorescrud",jugadorCrudRoutes);
 module.exports = app;
