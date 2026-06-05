@@ -185,15 +185,22 @@ function JugadoresCRUD() {
                 </p>
 
                 <button
-                  className="btn btn-danger"
-                  onClick={() =>
-                    eliminarJugador(
-                      jugador.id
-                    )
-                  }
-                >
-                  ❌ Eliminar
-                </button>
+  className="btn btn-primary"
+  onClick={() =>
+    editarJugador(jugador)
+  }
+>
+  ✏️ Editar
+</button>
+
+<button
+  className="btn btn-danger"
+  onClick={() =>
+    eliminarJugador(jugador.id)
+  }
+>
+  ❌ Eliminar
+</button>
 
               </div>
             )
