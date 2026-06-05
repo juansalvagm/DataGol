@@ -44,7 +44,9 @@ function JugadoresCRUD() {
 
       Swal.fire({
         icon: "success",
-        title: "Jugador creado"
+        title: "Jugador creado",
+        background: "#ffffff",
+        color: "#000000"
       });
 
       setFormulario({
@@ -136,7 +138,9 @@ function JugadoresCRUD() {
 
       Swal.fire({
         icon: "success",
-        title: "Jugador actualizado"
+        title: "Jugador actualizado",
+        background: "#ffffff",
+        color: "#000000"
       });
 
       cargarJugadores();
@@ -153,11 +157,11 @@ function JugadoresCRUD() {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#19e35f",
+      cancelButtonColor: "#6b7280",
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
-      background: "#07110b",
-      color: "#ffffff"
+      background: "#ffffff",
+      color: "#000000"
     });
 
     if (!resultado.isConfirmed) return;
@@ -168,8 +172,8 @@ function JugadoresCRUD() {
       Swal.fire({
         icon: "success",
         title: "Jugador eliminado",
-        background: "#07110b",
-        color: "#ffffff"
+        background: "#ffffff",
+        color: "#000000"
       });
 
       cargarJugadores();
