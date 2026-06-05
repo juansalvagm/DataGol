@@ -61,106 +61,86 @@ function JugadoresCRUD() {
     }
   };
 
-const editarJugador = async (jugador) => {
-  const { value: formValues } = await Swal.fire({
-    title: "Editar jugador",
-    html: `
-      <input
-        id="swal-nombre"
-        class="swal2-input"
-        value="${jugador.nombre}"
-        placeholder="Nombre"
-      >
+  const editarJugador = async (jugador) => {
+    const { value: formValues } = await Swal.fire({
+      title: "Editar jugador",
 
-      <input
-        id="swal-posicion"
-        class="swal2-input"
-        value="${jugador.posicion}"
-        placeholder="Posición"
-      >
+      html: `
+        <input
+          id="swal-nombre"
+          class="swal2-input"
+          value="${jugador.nombre || ""}"
+          placeholder="Nombre"
+        >
 
-      <input
-        id="swal-nacionalidad"
-        class="swal2-input"
-        value="${jugador.nacionalidad}"
-        placeholder="Nacionalidad"
-      >
+        <input
+          id="swal-posicion"
+          class="swal2-input"
+          value="${jugador.posicion || ""}"
+          placeholder="Posición"
+        >
 
-      <input
-        id="swal-equipo"
-        class="swal2-input"
-        value="${jugador.equipo_id}"
-        placeholder="ID Equipo"
-      >
-    `,
-    focusConfirm: false,
-    showCancelButton: true,
-    confirmButtonText: "OK",
-    cancelButtonText: "Cancel",
-    preConfirm: () => ({
-      nombre:
-        document.getElementById(
-          "swal-nombre"
-        ).value,
+        <input
+          id="swal-nacionalidad"
+          class="swal2-input"
+          value="${jugador.nacionalidad || ""}"
+          placeholder="Nacionalidad"
+        >
 
-      posicion:
-        document.getElementById(
-          "swal-posicion"
-        ).value,
+        <input
+          id="swal-equipo"
+          class="swal2-input"
+          value="${jugador.equipo_id || ""}"
+          placeholder="ID Equipo"
+        >
+      `,
 
-      nacionalidad:
-        document.getElementById(
-          "swal-nacionalidad"
-        ).value,
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
 
-      equipo_id:
-        document.getElementById(
-          "swal-equipo"
-        ).value,
+      preConfirm: () => ({
+        nombre:
+          document.getElementById(
+            "swal-nombre"
+          ).value,
 
-      usuario_id:
-        jugador.usuario_id
-    })
-  });
+        posicion:
+          document.getElementById(
+            "swal-posicion"
+          ).value,
 
-  if (!formValues) return;
+        nacionalidad:
+          document.getElementById(
+            "swal-nacionalidad"
+          ).value,
 
-  try {
+        equipo_id: Number(
+          document.getElementById(
+            "swal-equipo"
+          ).value
+        ),
 
-    await api.put(
-      `/jugadorescrud/${jugador.id}`,
-      formValues
-    );
-
-    Swal.fire({
-      icon: "success",
-      title: "Jugador actualizado"
+        usuario_id:
+          jugador.usuario_id
+      })
     });
 
-    cargarJugadores();
-
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
-    if (!resultado.isConfirmed) return;
+    if (!formValues) return;
 
     try {
       await api.put(
         `/jugadorescrud/${jugador.id}`,
-        resultado.value
+        formValues
       );
 
       Swal.fire({
         icon: "success",
-        title: "Jugador actualizado",
-        background: "#07110b",
-        color: "#ffffff"
+        title: "Jugador actualizado"
       });
 
       cargarJugadores();
+
     } catch (error) {
       console.log(error);
     }
@@ -201,7 +181,6 @@ const editarJugador = async (jugador) => {
   return (
     <div className="app-shell">
       <div className="container">
-
         <div className="page-header">
           <h1>CRUD Jugadores ⚽</h1>
           <p>Gestión de jugadores</p>
@@ -302,10 +281,9 @@ const editarJugador = async (jugador) => {
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );
-
+}
 
 export default JugadoresCRUD;
