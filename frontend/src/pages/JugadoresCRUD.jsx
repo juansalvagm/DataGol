@@ -61,30 +61,89 @@ function JugadoresCRUD() {
     }
   };
 
-  const editarJugador = async (jugador) => {
-    const resultado = await Swal.fire({
-      title: "Editar jugador",
-      html: `
-        <input id="swal-nombre" class="swal2-input" value="${jugador.nombre || ""}" placeholder="Nombre">
-        <input id="swal-posicion" class="swal2-input" value="${jugador.posicion || ""}" placeholder="Posición">
-        <input id="swal-nacionalidad" class="swal2-input" value="${jugador.nacionalidad || ""}" placeholder="Nacionalidad">
-        <input id="swal-equipo" class="swal2-input" value="${jugador.equipo_id || ""}" placeholder="ID Equipo">
-      `,
-      showCancelButton: true,
-      confirmButtonText: "Guardar",
-      cancelButtonText: "Cancelar",
-      background: "#07110b",
-      color: "#ffffff",
-      preConfirm: () => {
-        return {
-          nombre: document.getElementById("swal-nombre").value,
-          posicion: document.getElementById("swal-posicion").value,
-          nacionalidad: document.getElementById("swal-nacionalidad").value,
-          equipo_id: document.getElementById("swal-equipo").value,
-          usuario_id: jugador.usuario_id || usuario.id || 0
-        };
-      }
+const editarJugador = async (jugador) => {
+  const { value: formValues } = await Swal.fire({
+    title: "Editar jugador",
+    html: `
+      <input
+        id="swal-nombre"
+        class="swal2-input"
+        value="${jugador.nombre}"
+        placeholder="Nombre"
+      >
+
+      <input
+        id="swal-posicion"
+        class="swal2-input"
+        value="${jugador.posicion}"
+        placeholder="Posición"
+      >
+
+      <input
+        id="swal-nacionalidad"
+        class="swal2-input"
+        value="${jugador.nacionalidad}"
+        placeholder="Nacionalidad"
+      >
+
+      <input
+        id="swal-equipo"
+        class="swal2-input"
+        value="${jugador.equipo_id}"
+        placeholder="ID Equipo"
+      >
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+    preConfirm: () => ({
+      nombre:
+        document.getElementById(
+          "swal-nombre"
+        ).value,
+
+      posicion:
+        document.getElementById(
+          "swal-posicion"
+        ).value,
+
+      nacionalidad:
+        document.getElementById(
+          "swal-nacionalidad"
+        ).value,
+
+      equipo_id:
+        document.getElementById(
+          "swal-equipo"
+        ).value,
+
+      usuario_id:
+        jugador.usuario_id
+    })
+  });
+
+  if (!formValues) return;
+
+  try {
+
+    await api.put(
+      `/jugadorescrud/${jugador.id}`,
+      formValues
+    );
+
+    Swal.fire({
+      icon: "success",
+      title: "Jugador actualizado"
     });
+
+    cargarJugadores();
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
     if (!resultado.isConfirmed) return;
 
@@ -247,6 +306,6 @@ function JugadoresCRUD() {
       </div>
     </div>
   );
-}
+
 
 export default JugadoresCRUD;
