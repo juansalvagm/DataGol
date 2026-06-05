@@ -88,7 +88,9 @@ function Navbar() {
           <Link to="/favoritos" className="nav-pill">
             Favoritos
           </Link>
-
+<Link to="/jugadorescrud" className="nav-pill">
+  Jugadores
+</Link>
           <Link to="/equiposcrud" className="nav-pill">
           Equipos
           </Link>

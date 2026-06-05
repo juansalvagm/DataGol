@@ -18,7 +18,7 @@ import Noticias from "./pages/Noticias";
 import Perfil from "./pages/Perfil";
 import AdminUsuarios from "./pages/AdminUsuarios";
 import EquiposCRUD from "./pages/EquiposCRUD";
-
+import JugadoresCRUD from "./pages/JugadoresCRUD";
 function App() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
@@ -73,6 +73,8 @@ function App() {
             <Route path="/perfil" element={<Perfil />} />
             <Route path="/admin/usuarios" element={<AdminUsuarios />} />
             <Route path="/equiposcrud" element={<EquiposCRUD />}/>
+            <Route path="/jugadorescrud" element={<JugadoresCRUD />}
+/>
           </>
         )}
       </Routes>
