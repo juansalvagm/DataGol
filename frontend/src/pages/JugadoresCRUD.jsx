@@ -4,28 +4,22 @@ import Swal from "sweetalert2";
 
 function JugadoresCRUD() {
   const [jugadores, setJugadores] = useState([]);
-  const [jugadorEditando, setJugadorEditando] =
-    useState(null);
+
+  const usuario =
+    JSON.parse(localStorage.getItem("usuario")) || {};
 
   const [formulario, setFormulario] = useState({
     nombre: "",
     posicion: "",
     nacionalidad: "",
     equipo_id: "",
-    usuario_id:
-      JSON.parse(
-        localStorage.getItem("usuario")
-      )?.id || 0
+    usuario_id: usuario.id || 0
   });
 
   const cargarJugadores = async () => {
     try {
-      const response = await api.get(
-        "/jugadorescrud"
-      );
-
+      const response = await api.get("/jugadorescrud");
       setJugadores(response.data);
-
     } catch (error) {
       console.log(error);
     }
@@ -38,87 +32,108 @@ function JugadoresCRUD() {
   const manejarCambio = (e) => {
     setFormulario({
       ...formulario,
-      [e.target.name]:
-        e.target.value
+      [e.target.name]: e.target.value
     });
-  };
-
-  const editarJugador = (jugador) => {
-    setFormulario({
-      nombre: jugador.nombre,
-      posicion: jugador.posicion,
-      nacionalidad: jugador.nacionalidad,
-      equipo_id: jugador.equipo_id,
-      usuario_id: jugador.usuario_id
-    });
-
-    setJugadorEditando(jugador.id);
   };
 
   const crearJugador = async (e) => {
     e.preventDefault();
 
     try {
+      await api.post("/jugadorescrud", formulario);
 
-      if (jugadorEditando) {
-
-        await api.put(
-          `/jugadorescrud/${jugadorEditando}`,
-          formulario
-        );
-
-        Swal.fire({
-          icon: "success",
-          title: "Jugador actualizado"
-        });
-
-        setJugadorEditando(null);
-
-      } else {
-
-        await api.post(
-          "/jugadorescrud",
-          formulario
-        );
-
-        Swal.fire({
-          icon: "success",
-          title: "Jugador creado"
-        });
-
-      }
+      Swal.fire({
+        icon: "success",
+        title: "Jugador creado"
+      });
 
       setFormulario({
         nombre: "",
         posicion: "",
         nacionalidad: "",
         equipo_id: "",
-        usuario_id:
-          JSON.parse(
-            localStorage.getItem("usuario")
-          )?.id || 0
+        usuario_id: usuario.id || 0
       });
 
       cargarJugadores();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const editarJugador = async (jugador) => {
+    const resultado = await Swal.fire({
+      title: "Editar jugador",
+      html: `
+        <input id="swal-nombre" class="swal2-input" value="${jugador.nombre || ""}" placeholder="Nombre">
+        <input id="swal-posicion" class="swal2-input" value="${jugador.posicion || ""}" placeholder="Posición">
+        <input id="swal-nacionalidad" class="swal2-input" value="${jugador.nacionalidad || ""}" placeholder="Nacionalidad">
+        <input id="swal-equipo" class="swal2-input" value="${jugador.equipo_id || ""}" placeholder="ID Equipo">
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
+      background: "#07110b",
+      color: "#ffffff",
+      preConfirm: () => {
+        return {
+          nombre: document.getElementById("swal-nombre").value,
+          posicion: document.getElementById("swal-posicion").value,
+          nacionalidad: document.getElementById("swal-nacionalidad").value,
+          equipo_id: document.getElementById("swal-equipo").value,
+          usuario_id: jugador.usuario_id || usuario.id || 0
+        };
+      }
+    });
+
+    if (!resultado.isConfirmed) return;
+
+    try {
+      await api.put(
+        `/jugadorescrud/${jugador.id}`,
+        resultado.value
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Jugador actualizado",
+        background: "#07110b",
+        color: "#ffffff"
+      });
+
+      cargarJugadores();
     } catch (error) {
       console.log(error);
     }
   };
 
   const eliminarJugador = async (id) => {
+    const resultado = await Swal.fire({
+      title: "¿Eliminar jugador?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#19e35f",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      background: "#07110b",
+      color: "#ffffff"
+    });
+
+    if (!resultado.isConfirmed) return;
+
     try {
-      await api.delete(
-        `/jugadorescrud/${id}`
-      );
+      await api.delete(`/jugadorescrud/${id}`);
 
       Swal.fire({
         icon: "success",
-        title: "Jugador eliminado"
+        title: "Jugador eliminado",
+        background: "#07110b",
+        color: "#ffffff"
       });
 
       cargarJugadores();
-
     } catch (error) {
       console.log(error);
     }
@@ -136,11 +151,8 @@ function JugadoresCRUD() {
         <form
           onSubmit={crearJugador}
           className="card card-content"
-          style={{
-            marginBottom: "30px"
-          }}
+          style={{ marginBottom: "30px" }}
         >
-
           <input
             type="text"
             name="nombre"
@@ -185,65 +197,51 @@ function JugadoresCRUD() {
             type="submit"
             className="btn btn-primary"
           >
-            {
-              jugadorEditando
-                ? "💾 Guardar cambios"
-                : "➕ Crear jugador"
-            }
+            ➕ Crear jugador
           </button>
-
         </form>
 
         <div className="grid list-grid">
-          {jugadores.map(
-            (jugador) => (
+          {jugadores.map((jugador) => (
+            <div
+              key={jugador.id}
+              className="card card-content"
+            >
+              <h3>{jugador.nombre}</h3>
+
+              <p>Posición: {jugador.posicion}</p>
+
+              <p>
+                Nacionalidad: {jugador.nacionalidad}
+              </p>
+
               <div
-                key={jugador.id}
-                className="card card-content"
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  marginTop: "15px"
+                }}
               >
-                <h3>
-                  {jugador.nombre}
-                </h3>
-
-                <p>
-                  Posición: {jugador.posicion}
-                </p>
-
-                <p>
-                  Nacionalidad: {jugador.nacionalidad}
-                </p>
-
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                    marginTop: "15px"
-                  }}
+                <button
+                  className="btn btn-primary"
+                  onClick={() =>
+                    editarJugador(jugador)
+                  }
                 >
-                  <button
-                    className="btn btn-primary"
-                    onClick={() =>
-                      editarJugador(jugador)
-                    }
-                  >
-                    ✏️ Editar
-                  </button>
+                  ✏️ Editar
+                </button>
 
-                  <button
-                    className="btn btn-danger"
-                    onClick={() =>
-                      eliminarJugador(
-                        jugador.id
-                      )
-                    }
-                  >
-                    ❌ Eliminar
-                  </button>
-                </div>
-
+                <button
+                  className="btn btn-danger"
+                  onClick={() =>
+                    eliminarJugador(jugador.id)
+                  }
+                >
+                  ❌ Eliminar
+                </button>
               </div>
-            )
-          )}
+            </div>
+          ))}
         </div>
 
       </div>
